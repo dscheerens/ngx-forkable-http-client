@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpBackend, HttpClient, HttpInterceptor } from '@angular/common/http';
+import { Injectable, Inject, Optional } from '@angular/core';
+import { HTTP_INTERCEPTORS, HttpBackend, HttpClient, HttpInterceptor } from '@angular/common/http';
 
 import { createInterceptorHandler } from './http-interceptor-handler';
 
 @Injectable()
 export class ForkableHttpClient extends HttpClient {
 
-    constructor(private backend: HttpBackend, private interceptors: HttpInterceptor[]) {
-        super(createInterceptorHandler(backend, interceptors));
+    constructor(private backend: HttpBackend, @Optional() @Inject(HTTP_INTERCEPTORS) private interceptors: HttpInterceptor[]) {
+        super(createInterceptorHandler(backend, interceptors || []));
     }
 
     public fork(...interceptors: HttpInterceptor[]): ForkableHttpClient {

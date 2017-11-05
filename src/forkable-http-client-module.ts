@@ -1,5 +1,5 @@
-import { Inject, NgModule, Optional } from '@angular/core';
-import { HTTP_INTERCEPTORS, HttpBackend, HttpClientModule, HttpInterceptor } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { HttpBackend, HttpClientModule, HttpInterceptor } from '@angular/common/http';
 
 import { ForkableHttpClient } from './forkable-http-client';
 
@@ -12,11 +12,7 @@ export function forkableHttpClientFactory(backend: HttpBackend, interceptors: Ht
         HttpClientModule
     ],
     providers: [
-        {
-            provide: ForkableHttpClient,
-            useFactory: forkableHttpClientFactory,
-            deps: [HttpBackend, [new Optional(), new Inject(HTTP_INTERCEPTORS)]]
-        }
+        ForkableHttpClient
     ]
 })
 export class ForkableHttpClientModule {
