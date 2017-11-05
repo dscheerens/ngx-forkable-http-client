@@ -1,12 +1,12 @@
 import { InjectionToken, Inject } from '@angular/core';
 import { TestBed, inject } from '@angular/core/testing';
-import { HTTP_INTERCEPTORS, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpBackend, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { Observable } from 'rxjs/Observable';
 
 import { ForkableHttpClientModule } from './forkable-http-client-module';
-import { ForkableHttpClient } from './forkable-http-client';
+import { ForkableHttpClient, forkHttpClient } from './forkable-http-client';
 
 const INTERCEPTOR_SEQUENCE_JOURNAL = new InjectionToken<string[]>('INTERCEPTOR_SEQUENCE_JOURNAL');
 
@@ -86,6 +86,11 @@ describe('forkable http client', () => {
         expect(interceptorSequenceJournal).toEqual(['A', 'B']);
     });
 
+    it('can be instantiated when no global HTTP interceptors are present', inject([HttpBackend], (backend: HttpBackend) => {
+        new ForkableHttpClient(backend, <any> null).get('/foo').subscribe();
+        expect(interceptorSequenceJournal).toEqual([]);
+    }));
+
     it('can be forked without additional HTTP interceptors', () => {
         baseHttpClient.fork().get('/foo').subscribe();
         expect(interceptorSequenceJournal).toEqual(['A', 'B']);
@@ -114,6 +119,11 @@ describe('forkable http client', () => {
 
         baseHttpClient.fork(testInterceptorE, testInterceptorF).fork(testInterceptorC, testInterceptorD).get('/foo').subscribe();
         expect(interceptorSequenceJournal).toEqual(['A', 'B', 'E', 'F', 'C', 'D']);
+    });
+
+    it('can be forked through the `forkHttpClient` function', () => {
+        forkHttpClient(baseHttpClient, testInterceptorC, testInterceptorD).get('/foo').subscribe();
+        expect(interceptorSequenceJournal).toEqual(['A', 'B', 'C', 'D']);
     });
 
 });

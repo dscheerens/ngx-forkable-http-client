@@ -15,3 +15,7 @@ export class ForkableHttpClient extends HttpClient {
     }
 
 }
+
+export function forkHttpClient(parent: ForkableHttpClient, ...interceptors: HttpInterceptor[]): ForkableHttpClient {
+    return parent.fork(...interceptors);
+}
