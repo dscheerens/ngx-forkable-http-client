@@ -27,7 +27,9 @@
   "author": "Daan Scheerens",
   "license": "MIT",
   "peerDependencies": {
-    "@angular/core": ">=4.0.0"
+    "@angular/core": ">=4.3.0",
+    "@angular/common": ">=4.3.0",
+    "tslib": "^1.8.0"
   },
   "devDependencies": {
     "@angular/animations": "^4.4.0",
@@ -69,6 +71,7 @@
     "rxjs": "^5.2.0",
     "systemjs": "^0.20.12",
     "ts-node": "^3.0.2",
+    "tslib": "^1.8.0",
     "tslint": "^5.1.0",
     "typescript": "~2.3.4",
     "zone.js": "^0.8.5"
