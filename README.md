@@ -124,7 +124,7 @@ The example above shows you need to do three things to setup the forked HTTP cli
    The arguments for the factory function are provided as an array via the `deps` property.
 
 What the example above does not show is how to hierarchically structure the HTTP clients.
-All clients in the example fork off from the default client, which can be seen by the first element of the deps array being: `HttpInterceptor`.
+All clients in the example fork off from the default client, which can be seen by the first element of the deps array being: `ForkableHttpClient`.
 If instead you would like to fork off another qualified HTTP client (which needs to be a `ForkableHttpClient`), then use the following definition of your provider:
 
 ```TypeScript
