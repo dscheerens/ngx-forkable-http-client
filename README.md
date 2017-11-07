@@ -34,11 +34,14 @@ Example:
 import { InjectionToken } from '@angular/core';
 import { ForkableHttpClient } from 'ngx-forkable-http-client';
 
-export const MY_REST_API_HTTP_CLIENT = new InjectionToken<ForkableHttpClient>('MY_REST_API_HTTP_CLIENT');
+export const MY_REST_API_HTTP_CLIENT =
+  new InjectionToken<ForkableHttpClient>('MY_REST_API_HTTP_CLIENT');
 
-export const EXTERNAL_API_X_HTTP_CLIENT = new InjectionToken<ForkableHttpClient>('EXTERNAL_API_X_HTTP_CLIENT');
+export const EXTERNAL_API_X_HTTP_CLIENT =
+  new InjectionToken<ForkableHttpClient>('EXTERNAL_API_X_HTTP_CLIENT');
 
-export const EXTERNAL_API_Y_HTTP_CLIENT = new InjectionToken<ForkableHttpClient>('EXTERNAL_API_Y_HTTP_CLIENT');
+export const EXTERNAL_API_Y_HTTP_CLIENT =
+  new InjectionToken<ForkableHttpClient>('EXTERNAL_API_Y_HTTP_CLIENT');
 ```
 
 Use these injection tokens as a qualifier to inject the correct `HttpClient` in your services, e.g.:
@@ -61,7 +64,7 @@ export class ServiceThatUsesExternalApis {
 }
 ```
 
-You can use these injected HTTP client in the exact same way as you would do with the default (non-qualified) `HttpClient`.
+You can use these injected HTTP clients in the exact same way as you would do with the default (non-qualified) `HttpClient`.
 The only difference is that the qualified versions may have additional HTTP interceptors.
 
 The final step is to define the providers for the qualified HTTP clients.
