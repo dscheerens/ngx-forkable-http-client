@@ -4,7 +4,7 @@
 
 This Angular module provides a `ForkableHttpClient` class which is an extension of the [`HttpClient`](https://angular.io/api/common/http/HttpClient) that was introduced in Angular 4.3.
 With the extension it becomes possible to fork HTTP clients to create new ones.
-In the process of forking a `ForkableHttpClient` you can specify a number of additional [`HttpInterceptor`](https://angular.io/api/common/http/HttpInterceptor)s that will be used by the new HTTP client.
+In the process of forking a `ForkableHttpClient` you can specify a number of additional [`HttpInterceptor`](https://angular.io/api/common/http/HttpInterceptor) instances that will be used by the new HTTP client.
 This enables you to easily support non-global HTTP interceptors.
 Furthermore it allows you employ a hierarchically structured approach in setting up the HTTP clients needed by the different services of your application.
 The latter is very useful when your application needs to use multiple external API's exposed through HTTP endpoints.
@@ -17,7 +17,7 @@ Start by installing the `ngx-forkable-http-client` NPM package:
 npm install --save ngx-forkable-http-client
 ```
 
-Configure your build tooling, e.g. _SystemJS_ or _Karma_, if necessary to include one of the distribution bundles provided by this package.
+Configure your build tooling, e.g. _SystemJS_ or _Karma_, to include one of the distribution bundles provided by this package if necessary.
 The following bundles are available:
 
 * An ECMAScript 6 bundle (used for tree shaking): `node_modules/ngx-forkable-http-client/bundles/ngx-forkable-http-client.js`
@@ -26,7 +26,7 @@ The following bundles are available:
 
 ## Usage
 
-To make use of this package begin by defining one or more [`InjectionToken`](https://angular.io/api/core/InjectionToken)s for the `HttpClient` forks.
+To make use of this package begin by defining an [`InjectionToken`](https://angular.io/api/core/InjectionToken) for each of the `HttpClient` forks.
 
 Example:
 
@@ -103,7 +103,6 @@ import { ForkableHttpClientModule, ForkableHttpClient, forkHttpClient } from 'ng
   ]
 })
 export class AppModule {
-
 }
 ```
 
@@ -113,8 +112,8 @@ The example above shows you need to do three things to setup the forked HTTP cli
    Since this module already imports [`HttpClientModule`](https://angular.io/api/common/http/HttpClientModule) you don't need to explicitly add it yourself to the import list of your module.
 
 2. Define the non-global HTTP interceptors.
-   This is a simple as providing them as [`TypeProvider`](https://angular.io/api/core/TypeProvider)s.
-   Be sure not to define them using the [`HTTP_INTERCEPTORS`](https://angular.io/api/common/http/HTTP_INTERCEPTORS) injection token, as that will result in them being used as global interceptors, which are used by **every** HTTP client.
+   This is a simple as providing them as [`TypeProvider`](https://angular.io/api/core/TypeProvider) entries in the `providers` array.
+   Be sure not to define them using the [`HTTP_INTERCEPTORS`](https://angular.io/api/common/http/HTTP_INTERCEPTORS) injection token, as that will result in them being used as global interceptors.
 
 3. Define the providers for the qualified HTTP clients.
    For this you have to use the `forkHttpClient` factory function.
@@ -136,6 +135,7 @@ import { ForkableHttpClientModule, ForkableHttpClient, forkHttpClient } from 'ng
     ForkableHttpClientModule
   ],
   providers: [
+    CacheHttpInterceptor,
     {
       provide: MY_REST_API_HTTP_CLIENT_WITH_CACHING,
       useFactory: forkHttpClient,
@@ -144,11 +144,6 @@ import { ForkableHttpClientModule, ForkableHttpClient, forkHttpClient } from 'ng
   ]
 })
 export class AnotherModule {
-
 }
 ```
 As can be seen from the example above, a new client is defined that forks off from the `MY_REST_API_HTTP_CLIENT`, inheriting all of the parent's interceptors and obtaining the additional `CacheHttpInterceptor`.
-
-## Concepts
-
-_(TODO)_
