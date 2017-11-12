@@ -8,7 +8,7 @@ In order to support similar functionality in Angular 2 you had to create your ow
 While that approach worked fine, it was not a very convenient one.
 Alternatively you could have used a third party Angular library to bring back HTTP interceptor support.
 
-With the release of Angular 4.3 the new `HttpClient` was introduced, which deprecated the `Http` service.
+With the release of Angular 4.3 the new [`HttpClient`](https://angular.io/api/common/http/HttpClient) was introduced, which deprecated the [`Http`](https://v4.angular.io/api/http/Http) service.
 Apart from a much improved API the new HTTP client also brought back the beloved HTTP interceptors.
 So, everything is good now... right?
 
@@ -34,8 +34,42 @@ Maybe the application is deployed in different environments or the interceptor c
 In those situations the URLs are not known in advance and you need to implement a mechanism to provide this information from outside of the interceptor.
 
 Another problem that can occur with global HTTP interceptors is that it can lead to circular dependencies.
-Recently I encountered such a situation when developing an interceptor that automatically would redirect the user to login screen of a single sign on service.
+Recently I encountered such a situation when developing an interceptor that in case of a [_401 Unauthorized_](https://httpstatuses.com/401) response would automatically redirect the user to login screen of a single sign on service.
 The interceptor made use of an authentication service, that in turn had a dependency on `HttpClient`.
 A simplified dependency graph of the situation is shown below.
 
 ![Dependency graph diagram](dependency-diagram.svg)
+
+Angular's `HttpClient` has a [transitive dependency](https://github.com/angular/angular/blob/5.0.1/packages/common/http/src/module.ts#L120-L127) on the `HTTP_INTERCEPTORS` multi-provider.
+Since the `AutoLoginHttpInterceptor` was defined as a global HTTP interceptor, by means of a provider for the `HTTP_INTERCEPTORS` token, this resulted in a cyclic dependency graph.
+The irony of this situation is that the `AutoLoginHttpInterceptor` should not even have have intercepted messages for the `AuthenticationService`.
+Simply checking the URLs of the messages in this case did not help to solve the circular dependency problem.
+Another solution was needed here.
+
+## Non-global HTTP interceptors
+
+Hopefully, by now it is clear why global HTTP interceptors can be a bit of a problem.
+The obvious solution is to start using non-global HTTP interceptors.
+Although that sounds easy, Angular currently does not offer an easy way to set them up like that.
+
+When I started to look into the problem of how to support non-global interceptors, my goal was to do so without having to introduce a wrapper class for the `HttpClient` as was needed before Angular 4.3.
+In the ideal solution my services still should have been able to use `HttpClient`, together with an `@Inject` decorator as a qualifier to be able to select the right HTTP client.
+An example of how this is supposed to look like is shown below:
+
+```Typescript
+import { InjectionToken, Inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+export const HTTP_CLIENT_X = new InjectionToken<HttpClient>('HTTP_CLIENT_X');
+export const HTTP_CLIENT_Y = new InjectionToken<HttpClient>('HTTP_CLIENT_Y');
+
+export class ServiceX {
+  constructor(@Inject(HTTP_CLIENT_X) private httpClient: HttpClient) { }
+  // ...
+}
+
+export class ServiceY {
+  constructor(@Inject(HTTP_CLIENT_Y) private httpClient: HttpClient) { }
+  // ...
+}
+```
