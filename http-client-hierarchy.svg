@@ -1,0 +1,63 @@
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="401px" height="282px" version="1.1">
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="0%" y2="100%" id="mx-gradient-f5f5f5-1-b3b3b3-1-s-0">
+            <stop offset="0%" style="stop-color:#f5f5f5" />
+            <stop offset="100%" style="stop-color:#b3b3b3" />
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="0%" y2="100%" id="mx-gradient-dae8fc-1-7ea6e0-1-s-0">
+            <stop offset="0%" style="stop-color:#dae8fc" />
+            <stop offset="100%" style="stop-color:#7ea6e0" />
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="0%" y2="100%" id="mx-gradient-f8cecc-1-ea6b66-1-s-0">
+            <stop offset="0%" style="stop-color:#f8cecc" />
+            <stop offset="100%" style="stop-color:#ea6b66" />
+        </linearGradient>
+        <linearGradient x1="0%" y1="0%" x2="0%" y2="100%" id="mx-gradient-d5e8d4-1-97d077-1-s-0">
+            <stop offset="0%" style="stop-color:#d5e8d4" />
+            <stop offset="100%" style="stop-color:#97d077" />
+        </linearGradient>
+    </defs>
+    <g transform="translate(0.5,0.5)">
+        <path d="M 246.03 34.1 L 158.81 121.32" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none" />
+        <path d="M 155.1 125.04 L 157.58 117.61 L 158.81 121.32 L 162.53 122.56 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none" />
+        <path d="M 274.31 34.1 L 361.53 121.32" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none" />
+        <path d="M 365.24 125.04 L 357.82 122.56 L 361.53 121.32 L 362.77 117.61 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none" />
+        <ellipse cx="260" cy="20" rx="20" ry="20" fill="url(#mx-gradient-f5f5f5-1-b3b3b3-1-s-0)" stroke="#666666" pointer-events="none" />
+        <g transform="translate(246.5,13.5)">
+            <text x="14" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">base</text>
+        </g>
+        <path d="M 139.83 160.31 L 139.83 233.94" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none" />
+        <path d="M 139.83 239.19 L 136.33 232.19 L 139.83 233.94 L 143.33 232.19 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none" />
+        <path d="M 126.03 154.1 L 38.81 241.32" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none" />
+        <path d="M 35.1 245.04 L 37.58 237.61 L 38.81 241.32 L 42.53 242.56 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none" />
+        <ellipse cx="140" cy="140" rx="20" ry="20" fill="url(#mx-gradient-dae8fc-1-7ea6e0-1-s-0)" stroke="#6c8ebf" pointer-events="none" />
+        <g transform="translate(135.5,133.5)">
+            <text x="5" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">A</text>
+        </g>
+        <ellipse cx="140" cy="260" rx="20" ry="20" fill="url(#mx-gradient-dae8fc-1-7ea6e0-1-s-0)" stroke="#6c8ebf" pointer-events="none" />
+        <g transform="translate(132.5,253.5)">
+            <text x="8" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">A2</text>
+        </g>
+        <ellipse cx="20" cy="260" rx="20" ry="20" fill="url(#mx-gradient-dae8fc-1-7ea6e0-1-s-0)" stroke="#6c8ebf" pointer-events="none" />
+        <g transform="translate(12.5,253.5)">
+            <text x="8" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">A1</text>
+        </g>
+        <path d="M 259.83 160.31 L 259.83 233.94" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none" />
+        <path d="M 259.83 239.19 L 256.33 232.19 L 259.83 233.94 L 263.33 232.19 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none" />
+        <ellipse cx="260" cy="140" rx="20" ry="20" fill="url(#mx-gradient-f8cecc-1-ea6b66-1-s-0)" stroke="#b85450" pointer-events="none" />
+        <g transform="translate(255.5,133.5)">
+            <text x="5" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">B</text>
+        </g>
+        <ellipse cx="380" cy="140" rx="20" ry="20" fill="url(#mx-gradient-d5e8d4-1-97d077-1-s-0)" stroke="#82b366" pointer-events="none" />
+        <g transform="translate(375.5,133.5)">
+            <text x="5" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">C</text>
+        </g>
+        <ellipse cx="260" cy="260" rx="20" ry="20" fill="url(#mx-gradient-f8cecc-1-ea6b66-1-s-0)" stroke="#b85450" pointer-events="none" />
+        <g transform="translate(252.5,253.5)">
+            <text x="8" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">B1</text>
+        </g>
+        <path d="M 259.83 40.31 L 259.83 113.94" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none" />
+        <path d="M 259.83 119.19 L 256.33 112.19 L 259.83 113.94 L 263.33 112.19 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none" />
+    </g>
+</svg>

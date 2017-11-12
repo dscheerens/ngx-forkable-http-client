@@ -93,6 +93,27 @@ import {
 } from '@angular/common/http'
 import { Observable } from 'rxjs/Observable';
 
+export class HttpClientA extends HttpClient {
+  constructor(
+    backend: HttpBackend,
+    @Optional() @Inject(HTTP_INTERCEPTORS) interceptors: HttpInterceptor[],
+    localInterceptorX: LocalInterceptorX,
+    localInterceptorY: LocalInterceptorY
+  ) {
+    super(interceptingHandler(backend, [...(interceptors || []), localInterceptorX, localInterceptorY]));
+  }
+}
+
+export class HttpClientB extends HttpClient {
+  constructor(
+    backend: HttpBackend,
+    @Optional() @Inject(HTTP_INTERCEPTORS) interceptors: HttpInterceptor[],
+    localInterceptorZ: LocalInterceptorZ
+  ) {
+    super(interceptingHandler(backend, [...(interceptors || []), LocalInterceptorZ]));
+  }
+}
+
 // Copied from: https://github.com/angular/angular/blob/5.0.1/packages/common/http/src/module.ts#L28-L35
 function interceptingHandler(
     backend: HttpBackend, interceptors: HttpInterceptor[] | null = []): HttpHandler {
@@ -111,30 +132,11 @@ class HttpInterceptorHandler implements HttpHandler {
     return this.interceptor.intercept(req, this.next);
   }
 }
-
-export class HttpClientA extends HttpClient {
-  constructor(
-    backend: HttpBackend,
-    @Optional() @Inject(HTTP_INTERCEPTORS) interceptors: HttpInterceptor[],
-    localInterceptorX: LocalInterceptorX,
-    localInterceptorY: LocalInterceptorY
-  ) {
-    super(interceptingHandler(backend, [...(interceptors || []), localInterceptorX, localInterceptorY]));
-  }
-}
-
-export class HttpClientB extends HttpClient {
-  constructor(
-    backend: HttpBackend,
-    @Optional() @Inject(HTTP_INTERCEPTORS) interceptors: HttpInterceptor[],
-    localInterceptorZ: LocalInterceptorZ,
-  ) {
-    super(interceptingHandler(backend, [...(interceptors || []), LocalInterceptorZ]));
-  }
-}
 ```
 
-The `interceptingHandler` function and `HttpInterceptorHandler` class have to be copied from the Angular source code since they are not exported as members from the public API.
+Both HTTP clients require an `HttpBackend` instance, the set of global HTTP interceptors (which might be `null`) and a number of local interceptors.
+Together these are passed to the `interceptingHandler` utility function to construct an `HttpHandler`, which is used to invoke the _super_ constructor of `HttpClient`.
+Note that the `interceptingHandler` function and `HttpInterceptorHandler` class have to be copied from the Angular source code since they are not exported as members from the public API.
 
 Finally we need to define the providers for these HTTP clients and their injection tokens in a module.
 An example of how to do so is shown in the code snippet below:
@@ -157,3 +159,17 @@ export class MyModule { }
 ```
 
 Together these three code snippets form a working example of how to add non-global HTTP interceptors in an application.
+
+## Forking HTTP clients
+
+In the previous section we saw how you could implement non-global HTTP interceptors by creating differently configured `HttpClient` instances.
+That approach works well but it is a bit verbose.
+Also it lacks the opportunity for creating a new HTTP client by building on existing clients.
+For bigger applications that make use of several different API's I envision an hierarchical model of HTTP clients.
+This is illustrated in the diagram below.
+
+![Example HTTP client hierarchy diagram](http-client-hierarchy.svg)
+
+In the diagram above every circle represents an HTTP client.
+The grey circle is the base HTTP client that has only global HTTP interceptors.
+The other clients are derived from a parent HTTP client and inherit the HTTP interceptors from its parent including a number of additional non-global interceptors.
