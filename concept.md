@@ -44,32 +44,116 @@ Angular's `HttpClient` has a [transitive dependency](https://github.com/angular/
 Since the `AutoLoginHttpInterceptor` was defined as a global HTTP interceptor, by means of a provider for the `HTTP_INTERCEPTORS` token, this resulted in a cyclic dependency graph.
 The irony of this situation is that the `AutoLoginHttpInterceptor` should not even have have intercepted messages for the `AuthenticationService`.
 Simply checking the URLs of the messages in this case did not help to solve the circular dependency problem.
-Another solution was needed here.
+Another solution is needed here.
 
 ## Non-global HTTP interceptors
 
 Hopefully, by now it is clear why global HTTP interceptors can be a bit of a problem.
-The obvious solution is to start using non-global HTTP interceptors.
+The obvious solution is to start using _non-global_ / _local_ HTTP interceptors.
 Although that sounds easy, Angular currently does not offer an easy way to set them up like that.
 
-When I started to look into the problem of how to support non-global interceptors, my goal was to do so without having to introduce a wrapper class for the `HttpClient` as was needed before Angular 4.3.
-In the ideal solution my services still should have been able to use `HttpClient`, together with an `@Inject` decorator as a qualifier to be able to select the right HTTP client.
+When starting to look into the problem of how to support non-global interceptors, the goal was to do so without having to introduce a wrapper class for the `HttpClient` as was needed before Angular 4.3.
+In the ideal solution services still should have been able to use `HttpClient`, together with an `@Inject` decorator as a qualifier to be able to select the right HTTP client.
 An example of how this is supposed to look like is shown below:
 
 ```Typescript
 import { InjectionToken, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-export const HTTP_CLIENT_X = new InjectionToken<HttpClient>('HTTP_CLIENT_X');
-export const HTTP_CLIENT_Y = new InjectionToken<HttpClient>('HTTP_CLIENT_Y');
+export const HTTP_CLIENT_A = new InjectionToken<HttpClient>('HTTP_CLIENT_A');
+export const HTTP_CLIENT_B = new InjectionToken<HttpClient>('HTTP_CLIENT_B');
 
-export class ServiceX {
-  constructor(@Inject(HTTP_CLIENT_X) private httpClient: HttpClient) { }
+export class ServiceA {
+  constructor(@Inject(HTTP_CLIENT_A) private httpClient: HttpClient) { }
   // ...
 }
 
-export class ServiceY {
-  constructor(@Inject(HTTP_CLIENT_Y) private httpClient: HttpClient) { }
+export class ServiceB {
+  constructor(@Inject(HTTP_CLIENT_B) private httpClient: HttpClient) { }
   // ...
 }
 ```
+
+The injection tokens make sure that it is possible to inject different instances of the `HttpClient`, where each client has its own set of HTTP interceptors.
+So the next problem to solve is how to create the different instances of the `HttpClient`.
+The answer can be found by studing the [`HttpClient` constructor](https://github.com/angular/angular/blob/5.0.1/packages/common/http/src/client.ts#L64), which apparently needs an [`HttpHandler`](https://angular.io/api/common/http/HttpHandler).
+By looking at the source of the [`HttpClientModule`](https://github.com/angular/angular/blob/5.0.1/packages/common/http/src/module.ts#L103-L135) we obtain the final piece of the puzzle: how to construct a `HttpHandler` from a set of HTTP interceptors.
+Putting all the pieces together results in a solution that looks like this:
+
+```TypeScript
+import { Inject, Optional } from '@angular/core';
+import {
+  HTTP_INTERCEPTORS,
+  HttpBackend,
+  HttpClient,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest
+} from '@angular/common/http'
+import { Observable } from 'rxjs/Observable';
+
+// Copied from: https://github.com/angular/angular/blob/5.0.1/packages/common/http/src/module.ts#L28-L35
+function interceptingHandler(
+    backend: HttpBackend, interceptors: HttpInterceptor[] | null = []): HttpHandler {
+  if (!interceptors) {
+    return backend;
+  }
+  return interceptors.reduceRight(
+      (next, interceptor) => new HttpInterceptorHandler(next, interceptor), backend);
+}
+
+// Copied from: https://github.com/angular/angular/blob/5.0.1/packages/common/http/src/interceptor.ts#L52-L58
+class HttpInterceptorHandler implements HttpHandler {
+  constructor(private next: HttpHandler, private interceptor: HttpInterceptor) {}
+
+  handle(req: HttpRequest<any>): Observable<HttpEvent<any>> {
+    return this.interceptor.intercept(req, this.next);
+  }
+}
+
+export class HttpClientA extends HttpClient {
+  constructor(
+    backend: HttpBackend,
+    @Optional() @Inject(HTTP_INTERCEPTORS) interceptors: HttpInterceptor[],
+    localInterceptorX: LocalInterceptorX,
+    localInterceptorY: LocalInterceptorY
+  ) {
+    super(interceptingHandler(backend, [...(interceptors || []), localInterceptorX, localInterceptorY]));
+  }
+}
+
+export class HttpClientB extends HttpClient {
+  constructor(
+    backend: HttpBackend,
+    @Optional() @Inject(HTTP_INTERCEPTORS) interceptors: HttpInterceptor[],
+    localInterceptorZ: LocalInterceptorZ,
+  ) {
+    super(interceptingHandler(backend, [...(interceptors || []), LocalInterceptorZ]));
+  }
+}
+```
+
+The `interceptingHandler` function and `HttpInterceptorHandler` class have to be copied from the Angular source code since they are not exported as members from the public API.
+
+Finally we need to define the providers for these HTTP clients and their injection tokens in a module.
+An example of how to do so is shown in the code snippet below:
+
+```Typescript
+@NgModule({
+  imports: [ HttpClientModule ],
+  poviders: [
+    // Local interceptors:
+    LocalInterceptorX,
+    LocalInterceptorY,
+    LocalInterceptorZ,
+
+     // HTTP clients:
+    { provide: HTTP_CLIENT_A, useClass: HttpClientA },
+    { provide: HTTP_CLIENT_B, useClass: HttpClientB }
+  ]
+})
+export class MyModule { }
+```
+
+Together these three code snippets form a working example of how to add non-global HTTP interceptors in an application.
