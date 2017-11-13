@@ -164,12 +164,60 @@ Together these three code snippets form a working example of how to add non-glob
 
 In the previous section we saw how you could implement non-global HTTP interceptors by creating differently configured `HttpClient` instances.
 That approach works well but it is a bit verbose.
-Also it lacks the opportunity for creating a new HTTP client by building on existing clients.
-For bigger applications that make use of several different API's I envision an hierarchical model of HTTP clients.
+Also it lacks the opportunity for creating a new HTTP clients by building on top of existing ones.
+For bigger applications it is not uncommon to use API's from a number of different vendors.
+In that scenario we can envision an hierarchical model of HTTP clients.
 This is illustrated in the diagram below.
 
 ![Example HTTP client hierarchy diagram](http-client-hierarchy.svg)
 
 In the diagram above every circle represents an HTTP client.
-The grey circle is the base HTTP client that has only global HTTP interceptors.
-The other clients are derived from a parent HTTP client and inherit the HTTP interceptors from its parent including a number of additional non-global interceptors.
+The gray circle is the root / base HTTP client that has only global HTTP interceptors.
+HTTP clients labeled _A_, _B_ and _C_ are all used for an API from a different vendor.
+Those in turn may form the basis for more specific clients as is shown in the diagram for the clients _A1_, _A2_ and _B1_.
+In this model each HTTP client (except for the root) is derived from a parent client and they inherit the HTTP interceptors from their parent including a number of additional non-global interceptors.
+
+Given the hierarchical approach outlined above, wouldn't it be cool if you could tell Angular to simply create a new HTTP client from some parent and add a number of non-global interceptors?
+Perhaps the code for this could look something like this:
+
+```Typescript
+const newHttpClient = someHttpClient.fork(localInterceptor1, localInterceptor2 /* etc... */);
+```
+
+Why call this function `fork`?
+Well the concept is similar to creating a [project fork](https://en.wikipedia.org/wiki/Fork_(software_development)) in VCS systems or doing a [process fork](https://en.wikipedia.org/wiki/Fork_(system_call)) in UNIX-based operating systems.
+
+So the code example to _fork_ an HTTP client looks simple but unfortunately Angulars `HttpClient` has no such function.
+However, nothing stops you from extending the `HttpClient` to add it yourself.
+So that is what I did and therefore created a `ForkableHttpClient`.
+The implementation of that class is shown below and it is surprisingly simple.
+
+```TypeScript
+export class ForkableHttpClient extends HttpClient {
+
+  constructor(
+    @Inject(HttpBackend) private baseHandler: HttpHandler,
+    @Optional() @Inject(HTTP_INTERCEPTORS) private interceptors: HttpInterceptor[]
+  ) {
+    super(createInterceptorHandler(baseHandler, interceptors || []));
+  }
+
+  public fork(...interceptors: HttpInterceptor[]): ForkableHttpClient {
+    return new ForkableHttpClient(this.baseHandler, [...this.interceptors, ...interceptors]);
+  }
+
+}
+```
+
+Basically all we have to do is keep track of the base `HttpHandler` and the `HttpInterceptor` set.
+With a slightly modified version of the [`interceptingHandler`](https://github.com/angular/angular/blob/5.0.1/packages/common/http/src/module.ts#L28-L35) function a new `HttpHandler` is created and passed to the `HttpClient` (_super_) constructor.
+Inside the `fork` function a new `ForkableHttpClient` is created by passing the base `HttpHandler` and the union of the original and additional HTTP interceptor set.
+Voila; now we've got our HTTP client that supports forking!
+
+To make this code easily available for use I created the [`ngx-forkable-http-client` NPM package](https://www.npmjs.com/package/ngx-forkable-http-client).
+This package ships with the `ForkableHttpClient` class and some additional tools to make it easy to setup the HTTP clients through [`@NgModule` decorator metadata](https://angular.io/api/core/NgModule).
+Documentation and source code can be found at the [`ngx-forkable-http-client` GitHub repository](https://github.com/dscheerens/ngx-forkable-http-client).
+
+## Summary
+
+_(TODO)_
