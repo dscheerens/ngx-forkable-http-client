@@ -9,6 +9,8 @@ This enables you to easily support non-global HTTP interceptors.
 Furthermore it allows you employ a hierarchically structured approach in setting up the HTTP clients needed by the different services of your application.
 The latter is very useful when your application needs to use multiple external API's exposed through HTTP endpoints.
 
+A detailed discussion of the concept can be found in the following article: _"[Fork your HTTP client: supporting non-global HTTP interceptors in Angular](https://github.com/dscheerens/ngx-forkable-http-client/blob/master/concept.md)"_
+
 ## Installation
 
 Start by installing the `ngx-forkable-http-client` NPM package:
@@ -128,7 +130,7 @@ If instead you would like to fork off another qualified HTTP client (which needs
 
 ```TypeScript
 import { NgModule, inject } from '@angular/core'
-import { ForkableHttpClientModule, ForkableHttpClient, forkHttpClient } from 'ngx-forkable-http-client';
+import { ForkableHttpClientModule, forkHttpClient } from 'ngx-forkable-http-client';
 
 @NgModule({
   imports: [
