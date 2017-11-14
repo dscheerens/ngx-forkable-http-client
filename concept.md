@@ -220,4 +220,23 @@ Documentation and source code can be found at the [`ngx-forkable-http-client` Gi
 
 ## Summary
 
-_(TODO)_
+The release of Angular 4.3 brought back the concept of [HTTP interceptors](https://angular.io/guide/http#intercepting-all-requests-or-responses), which have been absent since the introduction of Angular 2.
+HTTP interceptors are commonly used for [cross-cutting concerns](https://en.wikipedia.org/wiki/Cross-cutting_concern) like error handling, logging and setting the right authentication headers.
+
+Despite the apparent advantages of HTTP interceptors, there are some issues with the way they are currently supported in Angular.
+The problem lies in the fact that they operate on a global level, meaning that they intercept all HTTP requests and responses.
+That might be okay in many cases but it often forces you to add exceptions to ignore certain messages.
+It is not uncommon to find an HTTP interceptor that first checks the URL of a message before doing its magic.
+Although that approach works fine, it sort of pollutes the interceptor with additional logic that is not really related to its core functionality.
+One could argue that it is violation of the [separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns) principle.
+Another problem with global HTTP interceptors is that they can lead to unexpected circular dependencies that cannot easily be resolved.
+
+These issues can be addressed by switching to non-global HTTP interceptors.
+Angular offers no out of the box solution for such interceptors.
+Fortunately it is not that hard to set them up yourself by introducing multiple `HttpClient` instances, each configured with a different set of HTTP interceptors.
+An example of how to do this yourself has been demonstrated in this article.
+
+As an improvement upon the method for creating HTTP client instances with non-global HTTP interceptors a _forking_ approach has been presented that enables the construction of a hierarchy of HTTP clients.
+Such a hierarchy is useful for applications that use APIs from different vendors and which also have a need for different specialized HTTP clients that target the same API.
+To make non-global HTTP interceptors and HTTP client hierarchies easily available I created a small Angular library, which is available as the [`ngx-forkable-http-client`](https://www.npmjs.com/package/ngx-forkable-http-client) NPM package.
+Even if you do not need a hierarchy of HTTP clients in your application that library is still useful when you need non-global HTTP interceptors.
