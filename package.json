@@ -23,7 +23,10 @@
     "client",
     "fork",
     "forkable",
-    "interceptor"
+    "interceptor",
+    "global",
+    "non-global",
+    "local"
   ],
   "author": "Daan Scheerens",
   "license": "MIT",
