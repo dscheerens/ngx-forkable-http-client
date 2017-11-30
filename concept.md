@@ -15,7 +15,7 @@ So, everything is good now... right?
 ## The problem with Angular's HTTP interceptors
 
 While we can be happy about the fact that the interceptors are supported again, I feel like the Angular core team fell into the same trap as in AngularJS: the interceptors are global once more!
-Before looking at a (possible) solution, first let's see what does it mean for an interceptor to be global and why global interceptors can be a problem.
+Before looking at a (possible) solution, first let's see what it means for an interceptor to be global and why global interceptors can be a problem.
 
 If you take a look at the official documentation for Angular's `HttpClient` you'll find a section called "[_Intercepting **all** requests or responses_](https://angular.io/guide/http#intercepting-all-requests-or-responses)", that describes how to use HTTP interceptors.
 Notice that the word **_all_** has been highlighted; that is what is meant with global interceptors.
@@ -144,7 +144,7 @@ An example of how to do so is shown in the code snippet below:
 ```Typescript
 @NgModule({
   imports: [ HttpClientModule ],
-  poviders: [
+  providers: [
     // Local interceptors:
     LocalInterceptorX,
     LocalInterceptorY,
