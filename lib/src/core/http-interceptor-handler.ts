@@ -1,6 +1,6 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 export function createInterceptorHandler(baseHandler: HttpHandler, interceptors: HttpInterceptor[]): HttpHandler {
     return interceptors.reduceRight((next, interceptor) => new HttpInterceptorHandler(next, interceptor), baseHandler);
