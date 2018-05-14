@@ -4,20 +4,22 @@ import { HTTP_INTERCEPTORS, HttpBackend, HttpEvent, HttpHandler, HttpInterceptor
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { Observable } from 'rxjs';
-
 import { ForkableHttpClientModule } from './forkable-http-client-module';
+
 import { ForkableHttpClient, forkHttpClient } from './forkable-http-client';
 
 const INTERCEPTOR_SEQUENCE_JOURNAL = new InjectionToken<string[]>('INTERCEPTOR_SEQUENCE_JOURNAL');
 
 abstract class TestInterceptor implements HttpInterceptor {
 
-    constructor(private id: string, @Inject(INTERCEPTOR_SEQUENCE_JOURNAL) private journal: string[]) {
-
-    }
+    constructor(
+        private readonly id: string,
+        @Inject(INTERCEPTOR_SEQUENCE_JOURNAL) private readonly journal: string[]
+    ) { }
 
     public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         this.journal.push(this.id);
+
         return next.handle(request);
     }
 
@@ -74,12 +76,12 @@ describe('forkable http client', () => {
         });
     });
 
-    beforeEach(inject([ForkableHttpClient], (injected: ForkableHttpClient) => baseHttpClient = injected ));
-    beforeEach(inject([INTERCEPTOR_SEQUENCE_JOURNAL], (injected: string[]) => interceptorSequenceJournal = injected ));
-    beforeEach(inject([TestInterceptorC], (injected: TestInterceptor) => testInterceptorC = injected ));
-    beforeEach(inject([TestInterceptorD], (injected: TestInterceptor) => testInterceptorD = injected ));
-    beforeEach(inject([TestInterceptorE], (injected: TestInterceptor) => testInterceptorE = injected ));
-    beforeEach(inject([TestInterceptorF], (injected: TestInterceptor) => testInterceptorF = injected ));
+    beforeEach(inject([ForkableHttpClient], (injected: ForkableHttpClient) => baseHttpClient = injected));
+    beforeEach(inject([INTERCEPTOR_SEQUENCE_JOURNAL], (injected: string[]) => interceptorSequenceJournal = injected));
+    beforeEach(inject([TestInterceptorC], (injected: TestInterceptor) => testInterceptorC = injected));
+    beforeEach(inject([TestInterceptorD], (injected: TestInterceptor) => testInterceptorD = injected));
+    beforeEach(inject([TestInterceptorE], (injected: TestInterceptor) => testInterceptorE = injected));
+    beforeEach(inject([TestInterceptorF], (injected: TestInterceptor) => testInterceptorF = injected));
 
     it('supports the global HTTP interceptors', () => {
         baseHttpClient.get('/foo').subscribe();

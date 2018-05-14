@@ -1,14 +1,21 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
-        "outDir": "./build/out-tsc",
+
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "strictNullChecks": true,
+        "strictPropertyInitialization": true,
+
+        "outDir": "./dist/out-tsc",
         "sourceMap": true,
         "declaration": false,
         "moduleResolution": "node",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "noImplicitThis": true,
-        "noUnusedLocals": true,
         "target": "es5",
         "typeRoots": [
             "node_modules/@types"
@@ -16,6 +23,9 @@
         "lib": [
             "es2017",
             "dom"
+        ],
+        "plugins": [
+            { "name": "tslint-language-service" }
         ]
     }
 }

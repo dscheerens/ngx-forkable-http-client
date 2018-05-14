@@ -7,8 +7,8 @@ import { createInterceptorHandler } from './http-interceptor-handler';
 export class ForkableHttpClient extends HttpClient {
 
     constructor(
-        @Inject(HttpBackend) private baseHandler: HttpHandler,
-        @Optional() @Inject(HTTP_INTERCEPTORS) private interceptors: HttpInterceptor[]
+        @Inject(HttpBackend) private readonly baseHandler: HttpHandler,
+        @Optional() @Inject(HTTP_INTERCEPTORS) private readonly interceptors: HttpInterceptor[]
     ) {
         super(createInterceptorHandler(baseHandler, interceptors || []));
     }

@@ -4,7 +4,7 @@
   "newProjectRoot": "projects",
   "projects": {
     "lib": {
-      "root": "lib",
+      "root": "",
       "sourceRoot": "lib/src",
       "projectType": "library",
       "prefix": "lib",
@@ -13,18 +13,18 @@
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
             "tsConfig": "lib/tsconfig.lib.json",
-            "project": "lib/ng-package.json"
+            "project": "ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "lib/ng-package.prod.json"
+              "project": "ng-package.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "lib/src/test.ts",
+            "main": "lib/test.ts",
             "tsConfig": "lib/tsconfig.spec.json",
             "karmaConfig": "lib/karma.conf.js"
           }

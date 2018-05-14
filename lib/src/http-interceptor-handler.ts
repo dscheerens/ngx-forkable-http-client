@@ -8,7 +8,10 @@ export function createInterceptorHandler(baseHandler: HttpHandler, interceptors:
 
 export class HttpInterceptorHandler implements HttpHandler {
 
-    constructor(private next: HttpHandler, private interceptor: HttpInterceptor) { }
+    constructor(
+        private readonly next: HttpHandler,
+        private readonly interceptor: HttpInterceptor
+    ) { }
 
     public handle(request: HttpRequest<any>): Observable<HttpEvent<any>> {
         return this.interceptor.intercept(request, this.next);
