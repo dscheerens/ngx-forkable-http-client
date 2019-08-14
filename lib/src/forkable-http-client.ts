@@ -3,7 +3,7 @@ import { HTTP_INTERCEPTORS, HttpBackend, HttpClient, HttpHandler, HttpIntercepto
 
 import { createInterceptorHandler } from './http-interceptor-handler';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ForkableHttpClient extends HttpClient {
 
     constructor(

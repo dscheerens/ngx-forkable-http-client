@@ -69,12 +69,13 @@ The final step is to define the providers for the qualified HTTP clients.
 Assuming you have a number of HTTP interceptors which shouldn't be defined globally, a typical setup looks like the following:
 
 ```TypeScript
-import { NgModule } from '@angular/core'
-import { ForkableHttpClientModule, ForkableHttpClient, forkHttpClient } from 'ngx-forkable-http-client';
+import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { ForkableHttpClient, forkHttpClient } from 'ngx-forkable-http-client';
 
 @NgModule({
   imports: [
-    ForkableHttpClientModule
+    HttpClientModule
   ],
 
   providers: [
@@ -104,16 +105,13 @@ export class AppModule {
 }
 ```
 
-The example above shows you need to do three things to setup the forked HTTP clients:
+The example above shows you need to do two things to setup the forked HTTP clients:
 
-1. Import the `ForkableHttpClientModule`.
-   Since this module already imports [`HttpClientModule`](https://angular.io/api/common/http/HttpClientModule) you don't need to explicitly add it yourself to the import list of your module.
-
-2. Define the non-global HTTP interceptors.
+1. Define the non-global HTTP interceptors.
    This is a simple as providing them as [`TypeProvider`](https://angular.io/api/core/TypeProvider) entries in the `providers` array.
    Be sure not to define them using the [`HTTP_INTERCEPTORS`](https://angular.io/api/common/http/HTTP_INTERCEPTORS) injection token, as that will result in them being used as global interceptors.
 
-3. Define the providers for the qualified HTTP clients.
+2. Define the providers for the qualified HTTP clients.
    For this you have to use the `forkHttpClient` factory function.
    The first parameter of this function specifies the parent `ForkableHttpClient` from which a new client should be created.
    In addition you can provide zero or more [`HttpInterceptor`](https://angular.io/api/common/http/HttpInterceptor) instances as arguments for the `forkHttpClient` function.
@@ -125,12 +123,13 @@ All clients in the example fork off from the default client, which can be seen b
 If instead you would like to fork off another qualified HTTP client (which needs to be a `ForkableHttpClient`), then use the following definition of your provider:
 
 ```TypeScript
-import { NgModule, inject } from '@angular/core'
-import { ForkableHttpClientModule, forkHttpClient } from 'ngx-forkable-http-client';
+import { Inject, NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { forkHttpClient } from 'ngx-forkable-http-client';
 
 @NgModule({
   imports: [
-    ForkableHttpClientModule
+    HttpClientModule
   ],
   providers: [
     CacheHttpInterceptor,
@@ -144,4 +143,5 @@ import { ForkableHttpClientModule, forkHttpClient } from 'ngx-forkable-http-clie
 export class AnotherModule {
 }
 ```
+
 As can be seen from the example above, a new client is defined that forks off from the `MY_REST_API_HTTP_CLIENT`, inheriting all of the parent's interceptors and obtaining the additional `CacheHttpInterceptor`.

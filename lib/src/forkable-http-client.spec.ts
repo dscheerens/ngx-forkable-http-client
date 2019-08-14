@@ -4,7 +4,6 @@ import { HTTP_INTERCEPTORS, HttpBackend, HttpEvent, HttpHandler, HttpInterceptor
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { Observable } from 'rxjs';
-import { ForkableHttpClientModule } from './forkable-http-client-module';
 
 import { ForkableHttpClient, forkHttpClient } from './forkable-http-client';
 
@@ -61,8 +60,7 @@ describe('forkable http client', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
-                HttpClientTestingModule,
-                ForkableHttpClientModule
+                HttpClientTestingModule
             ],
             providers: [
                 { provide: INTERCEPTOR_SEQUENCE_JOURNAL, useFactory: () => [] },
