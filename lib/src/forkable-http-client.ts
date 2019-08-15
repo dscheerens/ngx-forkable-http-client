@@ -6,11 +6,14 @@ import { createInterceptorHandler } from './http-interceptor-handler';
 @Injectable({ providedIn: 'root' })
 export class ForkableHttpClient extends HttpClient {
 
+    private readonly interceptors: HttpInterceptor[];
+
     constructor(
         @Inject(HttpBackend) private readonly baseHandler: HttpHandler,
-        @Optional() @Inject(HTTP_INTERCEPTORS) private readonly interceptors: HttpInterceptor[]
+        @Optional() @Inject(HTTP_INTERCEPTORS) interceptors: HttpInterceptor[] | null
     ) {
         super(createInterceptorHandler(baseHandler, interceptors || []));
+        this.interceptors = interceptors || [];
     }
 
     public fork(...interceptors: HttpInterceptor[]): ForkableHttpClient {
