@@ -7,9 +7,12 @@
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
+        "strictBindCallApply": true,
+        "strictFunctionTypes": true,
         "strictNullChecks": true,
         "strictPropertyInitialization": true,
 
+        "baseUrl": "./",
         "outDir": "./dist/out-tsc",
         "sourceMap": true,
         "declaration": false,
@@ -25,7 +28,11 @@
             "dom"
         ],
         "plugins": [
-            { "name": "tslint-language-service" }
+            { "name": "typescript-tslint-plugin" }
         ]
+    },
+    "angularCompilerOptions": {
+        "fullTemplateTypeCheck": true,
+        "strictInjectionParameters": true
     }
 }

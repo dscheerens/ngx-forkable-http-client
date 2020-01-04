@@ -2,6 +2,7 @@ import { Injectable, InjectionToken, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { HttpBackend, HttpInterceptor } from '@angular/common/http';
 import { EMPTY, Observable } from 'rxjs';
+
 import { httpClient } from './forkable-http-client-factory-builder';
 import { ForkableHttpClient } from './forkable-http-client';
 
