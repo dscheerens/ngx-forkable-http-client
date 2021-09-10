@@ -1,6 +1,17 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [3.0.0](https://github.com/dscheerens/ngx-forkable-http-client/compare/v2.1.1...v3.0.0) (2021-09-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** peer dependencies have been updated to require at least Angular 12.0.0
+* **deps:** due to the updated dependencies this package now requires at least Angular 8.
+
+* **deps:** update dependencies ([fb2b3de](https://github.com/dscheerens/ngx-forkable-http-client/commit/fb2b3dee601907cf44ce01ac7bbe71ce6f038ff1))
+* **deps:** upgrade to Angular 12 ([6db372d](https://github.com/dscheerens/ngx-forkable-http-client/commit/6db372dd8a1c6280329a77423e1e9696b157b939))
 
 <a name="2.1.1"></a>
 # [2.1.1](https://github.com/dscheerens/ngx-forkable-http-client/compare/v2.0.0...v2.1.1) (2019-08-15)
