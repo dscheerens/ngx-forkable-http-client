@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/dscheerens/ngx-forkable-http-client.svg?branch=master)](https://travis-ci.com/dscheerens/ngx-forkable-http-client) [![NPM Version](https://img.shields.io/npm/v/ngx-forkable-http-client.svg)](https://www.npmjs.com/package/ngx-forkable-http-client)
+[![Build Status](https://travis-ci.com/dscheerens/ngx-forkable-http-client.svg?branch=master)](https://app.travis-ci.com/github/dscheerens/ngx-forkable-http-client) [![NPM Version](https://img.shields.io/npm/v/ngx-forkable-http-client.svg)](https://www.npmjs.com/package/ngx-forkable-http-client)
 
 # Forkable HTTP client extension for Angular
 
