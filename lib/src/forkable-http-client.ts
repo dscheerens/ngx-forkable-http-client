@@ -5,12 +5,11 @@ import { createInterceptorHandler } from './http-interceptor-handler';
 
 @Injectable({ providedIn: 'root' })
 export class ForkableHttpClient extends HttpClient {
-
     private readonly interceptors: HttpInterceptor[];
 
     constructor(
         @Inject(HttpBackend) private readonly baseHandler: HttpHandler,
-        @Optional() @Inject(HTTP_INTERCEPTORS) interceptors: HttpInterceptor[] | null
+        @Optional() @Inject(HTTP_INTERCEPTORS) interceptors: HttpInterceptor[] | null,
     ) {
         super(createInterceptorHandler(baseHandler, interceptors || []));
         this.interceptors = interceptors || [];
@@ -19,7 +18,6 @@ export class ForkableHttpClient extends HttpClient {
     public fork(...interceptors: HttpInterceptor[]): ForkableHttpClient {
         return new ForkableHttpClient(this.baseHandler, [...this.interceptors, ...interceptors]);
     }
-
 }
 
 export function forkHttpClient(parent: ForkableHttpClient, ...interceptors: HttpInterceptor[]): ForkableHttpClient {

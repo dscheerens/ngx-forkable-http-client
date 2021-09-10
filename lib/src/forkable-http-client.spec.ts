@@ -1,4 +1,4 @@
-import { InjectionToken, Inject } from '@angular/core';
+import { InjectionToken, Inject, Injectable } from '@angular/core';
 import { TestBed, inject } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS, HttpBackend, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -9,46 +9,49 @@ import { ForkableHttpClient, forkHttpClient } from './forkable-http-client';
 const INTERCEPTOR_SEQUENCE_JOURNAL = new InjectionToken<string[]>('INTERCEPTOR_SEQUENCE_JOURNAL');
 
 abstract class TestInterceptor implements HttpInterceptor {
-
     constructor(
         private readonly id: string,
-        @Inject(INTERCEPTOR_SEQUENCE_JOURNAL) private readonly journal: string[]
-    ) { }
+        @Inject(INTERCEPTOR_SEQUENCE_JOURNAL) private readonly journal: string[],
+    ) {}
 
-    public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
         this.journal.push(this.id);
 
         return next.handle(request);
     }
-
 }
 
+@Injectable()
 class TestInterceptorA extends TestInterceptor {
     constructor(@Inject(INTERCEPTOR_SEQUENCE_JOURNAL) journal: string[]) { super('A', journal); }
 }
 
+@Injectable()
 class TestInterceptorB extends TestInterceptor {
     constructor(@Inject(INTERCEPTOR_SEQUENCE_JOURNAL) journal: string[]) { super('B', journal); }
 }
 
+@Injectable()
 class TestInterceptorC extends TestInterceptor {
     constructor(@Inject(INTERCEPTOR_SEQUENCE_JOURNAL) journal: string[]) { super('C', journal); }
 }
 
+@Injectable()
 class TestInterceptorD extends TestInterceptor {
     constructor(@Inject(INTERCEPTOR_SEQUENCE_JOURNAL) journal: string[]) { super('D', journal); }
 }
 
+@Injectable()
 class TestInterceptorE extends TestInterceptor {
     constructor(@Inject(INTERCEPTOR_SEQUENCE_JOURNAL) journal: string[]) { super('E', journal); }
 }
 
+@Injectable()
 class TestInterceptorF extends TestInterceptor {
     constructor(@Inject(INTERCEPTOR_SEQUENCE_JOURNAL) journal: string[]) { super('F', journal); }
 }
 
 describe('forkable http client', () => {
-
     let baseHttpClient: ForkableHttpClient;
     let interceptorSequenceJournal: string[];
     let testInterceptorC: TestInterceptor;
@@ -59,7 +62,7 @@ describe('forkable http client', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
-                HttpClientTestingModule
+                HttpClientTestingModule,
             ],
             providers: [
                 { provide: INTERCEPTOR_SEQUENCE_JOURNAL, useFactory: () => [] },
@@ -68,8 +71,8 @@ describe('forkable http client', () => {
                 TestInterceptorC,
                 TestInterceptorD,
                 TestInterceptorE,
-                TestInterceptorF
-            ]
+                TestInterceptorF,
+            ],
         });
     });
 
@@ -86,7 +89,7 @@ describe('forkable http client', () => {
     });
 
     it('can be instantiated when no global HTTP interceptors are present', inject([HttpBackend], (backend: HttpBackend) => {
-        new ForkableHttpClient(backend, <any> null).get('/foo').subscribe();
+        new ForkableHttpClient(backend, null).get('/foo').subscribe();
         expect(interceptorSequenceJournal).toEqual([]);
     }));
 

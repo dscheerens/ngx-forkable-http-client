@@ -6,14 +6,12 @@ export function createInterceptorHandler(baseHandler: HttpHandler, interceptors:
 }
 
 export class HttpInterceptorHandler implements HttpHandler {
-
     constructor(
         private readonly next: HttpHandler,
-        private readonly interceptor: HttpInterceptor
-    ) { }
+        private readonly interceptor: HttpInterceptor,
+    ) {}
 
-    public handle(request: HttpRequest<any>): Observable<HttpEvent<any>> {
+    public handle(request: HttpRequest<unknown>): Observable<HttpEvent<unknown>> {
         return this.interceptor.intercept(request, this.next);
     }
-
 }

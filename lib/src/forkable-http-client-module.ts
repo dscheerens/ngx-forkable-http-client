@@ -7,9 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
  */
 @NgModule({
     imports: [
-        HttpClientModule
-    ]
+        HttpClientModule,
+    ],
 })
-export class ForkableHttpClientModule {
-
-}
+export class ForkableHttpClientModule {}

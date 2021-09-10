@@ -1,7 +1,7 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
-
+        "module": "es2020",
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
@@ -11,13 +11,11 @@
         "strictFunctionTypes": true,
         "strictNullChecks": true,
         "strictPropertyInitialization": true,
-
         "baseUrl": "./",
         "outDir": "./dist/out-tsc",
         "sourceMap": true,
         "declaration": false,
         "moduleResolution": "node",
-        "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "target": "es5",
         "typeRoots": [
@@ -28,7 +26,9 @@
             "dom"
         ],
         "plugins": [
-            { "name": "typescript-tslint-plugin" }
+            {
+                "name": "typescript-tslint-plugin"
+            }
         ]
     },
     "angularCompilerOptions": {

@@ -8,7 +8,7 @@ import { ForkableHttpClient } from './forkable-http-client';
 
 export const BASE = new InjectionToken<ForkableHttpClient>('BASE', {
     providedIn: 'root',
-    factory: httpClient()
+    factory: httpClient(),
 });
 
 @Injectable({ providedIn: 'root' })
@@ -18,31 +18,30 @@ export class InterceptorA implements HttpInterceptor {
 
 const INTERCEPTOR_B = new InjectionToken<HttpInterceptor>('INTERCEPTOR_B', {
     providedIn: 'root',
-    factory: () => ({} as any)
+    factory: () => ({} as any), // tslint:disable-line:no-any
 });
 
 const INTERCEPTOR_C = new InjectionToken<HttpInterceptor>('INTERCEPTOR_C', {
     providedIn: 'root',
-    factory: () => ({} as any)
+    factory: () => ({} as any), // tslint:disable-line:no-any
 });
 
 export const HTTP_CLIENT_A = new InjectionToken<ForkableHttpClient>('HTTP_CLIENT_A', {
     providedIn: 'root',
-    factory: httpClient(BASE).with(InterceptorA)
+    factory: httpClient(BASE).with(InterceptorA),
 });
 
 export const HTTP_CLIENT_B = new InjectionToken<ForkableHttpClient>('HTTP_CLIENT_B', {
     providedIn: 'root',
-    factory: httpClient(HTTP_CLIENT_A).with(INTERCEPTOR_B, INTERCEPTOR_C)
+    factory: httpClient(HTTP_CLIENT_A).with(INTERCEPTOR_B, INTERCEPTOR_C),
 });
 
 describe('forkable http client factory builder', () => {
-
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
-                { provide: HttpBackend, useValue: {} }
-            ]
+                { provide: HttpBackend, useValue: {} },
+            ],
         });
     });
 
@@ -63,13 +62,12 @@ describe('forkable http client factory builder', () => {
         expect(httpClientB).toBeDefined();
         expect(interceptorsOf(httpClientB)).toEqual([inject(InterceptorA), inject(INTERCEPTOR_B), inject(INTERCEPTOR_C)]);
     });
-
-    function inject<T>(token: Type<T> | InjectionToken<T>): T {
-        return TestBed.get(token);
-    }
-
-    function interceptorsOf(target: ForkableHttpClient): HttpInterceptor[] {
-        return (target as any).interceptors;
-    }
-
 });
+
+function inject<T>(token: Type<T> | InjectionToken<T>): T {
+    return TestBed.inject(token);
+}
+
+function interceptorsOf(target: ForkableHttpClient): HttpInterceptor[] {
+    return (target as unknown as { interceptors: HttpInterceptor[] }).interceptors;
+}
