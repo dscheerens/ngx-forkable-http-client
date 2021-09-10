@@ -1,6 +1,6 @@
-[![Build Status](https://api.travis-ci.org/dscheerens/ngx-forkable-http-client.svg?branch=master)](https://travis-ci.org/dscheerens/ngx-forkable-http-client) [![NPM Version](https://img.shields.io/npm/v/ngx-forkable-http-client.svg)](https://www.npmjs.com/package/ngx-forkable-http-client)
+[![Build Status](https://travis-ci.com/dscheerens/ngx-forkable-http-client.svg?branch=master)](https://travis-ci.com/dscheerens/ngx-forkable-http-client) [![NPM Version](https://img.shields.io/npm/v/ngx-forkable-http-client.svg)](https://www.npmjs.com/package/ngx-forkable-http-client)
 
-# Forkable HTTP client extension for Angular 6.0+
+# Forkable HTTP client extension for Angular
 
 This Angular module provides a `ForkableHttpClient` class which is an extension of the [`HttpClient`](https://angular.io/api/common/http/HttpClient) that was introduced in Angular 4.3.
 With the extension it becomes possible to fork HTTP clients to create new ones.
@@ -21,6 +21,17 @@ npm install --save ngx-forkable-http-client
 
 After having installed the `ngx-forkable-http-client` package you might need to update your project configuration depending on the build tools you use, e.g. _SystemJS_ or _Karma_.
 The `ngx-forkable-http-client` package is published in the [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview).
+
+
+### Angular version compatibility matrix
+
+Use the compatibility matrix below to determine which version of this module works with your project's Angular version.
+
+| Library version                        | Angular version |
+| -------------------------------------- | --------------- |
+| `ngx-forkable-http-client` - **1.x.x** | >= **4.0.0**    |
+| `ngx-forkable-http-client` - **2.x.x** | >= **6.0.0**    |
+| `ngx-forkable-http-client` - **3.x.x** | >= **12.0.0**   |
 
 ## Usage
 

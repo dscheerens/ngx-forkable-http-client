@@ -1,7 +1,7 @@
 {
   "name": "ngx-forkable-http-client",
   "version": "2.1.1",
-  "description": "Angular 6+ HTTP client that can be forked",
+  "description": "Angular HTTP client that can be forked",
   "homepage": "https://github.com/dscheerens/ngx-forkable-http-client",
   "author": "Daan Scheerens",
   "contributors": [
