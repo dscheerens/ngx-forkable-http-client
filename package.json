@@ -28,6 +28,7 @@
   },
   "scripts": {
     "lint": "tslint -p lib/tsconfig.lint.json -t stylish -c tslint.json",
+    "start": "ng serve demo",
     "test": "ng test --project=lib --watch=false --code-coverage",
     "test.watch": "ng test --project=lib --watch=true --code-coverage",
     "build": "ng build --project=lib --configuration production",

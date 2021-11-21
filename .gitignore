@@ -13,3 +13,5 @@
 Thumbs.db
 npm-debug.log
 *.iml
+/package
+*.tgz
