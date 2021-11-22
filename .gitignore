@@ -1,3 +1,4 @@
+/.angular/cache
 /.idea
 /.settings
 /.vscode
@@ -12,3 +13,5 @@
 Thumbs.db
 npm-debug.log
 *.iml
+/package
+*.tgz

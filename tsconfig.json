@@ -1,38 +1,38 @@
 {
+    "angularCompilerOptions": {
+        "fullTemplateTypeCheck": true,
+        "strictInjectionParameters": true
+    },
     "compileOnSave": false,
     "compilerOptions": {
-        "module": "es2020",
+        "baseUrl": "./",
+        "declaration": false,
+        "experimentalDecorators": true,
+        "lib": [
+            "ES2017",
+            "dom"
+        ],
+        "module": "ES2020",
+        "moduleResolution": "node",
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "strictBindCallApply": true,
-        "strictFunctionTypes": true,
-        "strictNullChecks": true,
-        "strictPropertyInitialization": true,
-        "baseUrl": "./",
         "outDir": "./dist/out-tsc",
-        "sourceMap": true,
-        "declaration": false,
-        "moduleResolution": "node",
-        "experimentalDecorators": true,
-        "target": "es5",
-        "typeRoots": [
-            "node_modules/@types"
-        ],
-        "lib": [
-            "es2017",
-            "dom"
-        ],
         "plugins": [
             {
                 "name": "typescript-tslint-plugin"
             }
+        ],
+        "sourceMap": true,
+        "strictBindCallApply": true,
+        "strictFunctionTypes": true,
+        "strictNullChecks": true,
+        "strictPropertyInitialization": true,
+        "target": "ES5",
+        "typeRoots": [
+            "node_modules/@types"
         ]
     },
-    "angularCompilerOptions": {
-        "fullTemplateTypeCheck": true,
-        "strictInjectionParameters": true
-    }
 }

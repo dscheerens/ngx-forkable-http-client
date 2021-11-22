@@ -32,6 +32,7 @@ Use the compatibility matrix below to determine which version of this module wor
 | `ngx-forkable-http-client` - **1.x.x** | >= **4.0.0**    |
 | `ngx-forkable-http-client` - **2.x.x** | >= **6.0.0**    |
 | `ngx-forkable-http-client` - **3.x.x** | >= **12.0.0**   |
+| `ngx-forkable-http-client` - **4.x.x** | >= **13.0.0**   |
 
 ## Usage
 
