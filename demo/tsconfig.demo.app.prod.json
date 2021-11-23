@@ -1,0 +1,10 @@
+{
+    "extends": "./tsconfig.demo.app.json",
+    "compilerOptions": {
+        "paths": {
+            "ngx-forkable-http-client": [
+                "../build/dist"
+            ]
+        }
+    }
+}

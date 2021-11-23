@@ -12,7 +12,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:ng-packagr",
                     "options": {
-                        "tsConfig": "lib/tsconfig.lib.json",
+                        "tsConfig": "lib/tsconfig.lib.base.json",
                         "project": "ng-package.json"
                     },
                     "configurations": {
@@ -27,7 +27,7 @@
                     "options": {
                         "sourceMap": true,
                         "main": "lib/test.ts",
-                        "tsConfig": "lib/tsconfig.spec.json",
+                        "tsConfig": "lib/tsconfig.lib.spec.json",
                         "karmaConfig": "lib/karma.conf.js"
                     }
                 }
@@ -36,34 +36,37 @@
         "demo": {
             "projectType": "application",
             "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
+                },
                 "@schematics/angular:application": {
                     "strict": true
                 }
             },
-            "root": "demo",
-            "sourceRoot": "demo/src",
+            "root": "",
+            "sourceRoot": "demo",
             "prefix": "demo",
             "architect": {
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
                         "outputPath": "build/demo",
-                        "index": "demo/src/index.html",
-                        "main": "demo/src/main.ts",
-                        "polyfills": "demo/src/polyfills.ts",
-                        "tsConfig": "demo/tsconfig.demo.json",
+                        "index": "demo/index.html",
+                        "main": "demo/main.ts",
+                        "polyfills": "demo/polyfills.ts",
+                        "tsConfig": "demo/tsconfig.demo.app.json",
                         "assets": [
-                            "demo/src/favicon.ico",
-                            "demo/src/assets"
+                            "demo/favicon.ico",
+                            "demo/assets"
                         ],
                         "styles": [
-                            "demo/src/styles.css"
+                            "demo/styles.scss"
                         ],
                         "scripts": []
                     },
                     "configurations": {
                         "production": {
-                            "tsConfig": "demo/tsconfig.demo.prod.json",
+                            "tsConfig": "demo/tsconfig.demo.app.prod.json",
                             "budgets": [
                                 {
                                     "type": "initial",
@@ -78,8 +81,8 @@
                             ],
                             "fileReplacements": [
                                 {
-                                    "replace": "demo/src/environments/environment.ts",
-                                    "with": "demo/src/environments/environment.prod.ts"
+                                    "replace": "demo/environments/environment.ts",
+                                    "with": "demo/environments/environment.prod.ts"
                                 }
                             ],
                             "outputHashing": "all"
@@ -106,29 +109,6 @@
                         }
                     },
                     "defaultConfiguration": "development"
-                },
-                "extract-i18n": {
-                    "builder": "@angular-devkit/build-angular:extract-i18n",
-                    "options": {
-                        "browserTarget": "demo:build"
-                    }
-                },
-                "test": {
-                    "builder": "@angular-devkit/build-angular:karma",
-                    "options": {
-                        "main": "demo/src/test.ts",
-                        "polyfills": "demo/src/polyfills.ts",
-                        "tsConfig": "demo/tsconfig.spec.json",
-                        "karmaConfig": "demo/karma.conf.js",
-                        "assets": [
-                            "demo/src/favicon.ico",
-                            "demo/src/assets"
-                        ],
-                        "styles": [
-                            "demo/src/styles.css"
-                        ],
-                        "scripts": []
-                    }
                 }
             }
         }

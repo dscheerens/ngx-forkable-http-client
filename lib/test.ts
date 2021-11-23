@@ -14,7 +14,7 @@ declare const require: any; // tslint:disable-line:no-any
 getTestBed().initTestEnvironment(
     BrowserDynamicTestingModule,
     platformBrowserDynamicTesting(), {
-    teardown: { destroyAfterEach: false }
+    teardown: { destroyAfterEach: false },
 },
 );
 // Then we find all the tests.
