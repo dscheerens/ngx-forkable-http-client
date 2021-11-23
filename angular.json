@@ -1,7 +1,7 @@
 {
     "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
     "version": 1,
-    "newProjectRoot": "projects",
+    "newProjectRoot": "./",
     "projects": {
         "lib": {
             "root": "lib",
@@ -12,7 +12,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:ng-packagr",
                     "options": {
-                        "tsConfig": "lib/tsconfig.lib.json",
+                        "tsConfig": "lib/tsconfig.lib.base.json",
                         "project": "ng-package.json"
                     },
                     "configurations": {
@@ -27,21 +27,88 @@
                     "options": {
                         "sourceMap": true,
                         "main": "lib/test.ts",
-                        "tsConfig": "lib/tsconfig.spec.json",
+                        "tsConfig": "lib/tsconfig.lib.spec.json",
                         "karmaConfig": "lib/karma.conf.js"
                     }
+                }
+            }
+        },
+        "demo": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
                 },
-                "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
+                "@schematics/angular:application": {
+                    "strict": true
+                }
+            },
+            "root": "",
+            "sourceRoot": "demo",
+            "prefix": "demo",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "tsConfig": [
-                            "lib/tsconfig.lib.json",
-                            "lib/tsconfig.spec.json"
+                        "outputPath": "build/demo",
+                        "index": "demo/index.html",
+                        "main": "demo/main.ts",
+                        "polyfills": "demo/polyfills.ts",
+                        "tsConfig": "demo/tsconfig.demo.app.json",
+                        "assets": [
+                            "demo/favicon.ico",
+                            "demo/assets"
                         ],
-                        "exclude": [
-                            "**/node_modules/**"
-                        ]
-                    }
+                        "styles": [
+                            "demo/styles.scss"
+                        ],
+                        "scripts": []
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "demo/tsconfig.demo.app.prod.json",
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "500kb",
+                                    "maximumError": "1mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "2kb",
+                                    "maximumError": "4kb"
+                                }
+                            ],
+                            "fileReplacements": [
+                                {
+                                    "replace": "demo/environments/environment.ts",
+                                    "with": "demo/environments/environment.prod.ts"
+                                }
+                            ],
+                            "outputHashing": "all"
+                        },
+                        "development": {
+                            "buildOptimizer": false,
+                            "optimization": false,
+                            "vendorChunk": true,
+                            "extractLicenses": false,
+                            "sourceMap": true,
+                            "namedChunks": true
+                        }
+                    },
+                    "defaultConfiguration": "production"
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "demo:build:production"
+                        },
+                        "development": {
+                            "browserTarget": "demo:build:development"
+                        }
+                    },
+                    "defaultConfiguration": "development"
                 }
             }
         }
