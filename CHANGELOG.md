@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/dscheerens/ngx-forkable-http-client/compare/v3.0.0...v4.0.0) (2021-11-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* the deprecated `ForkableHttpClientModule` has been removed, replace usage with `HttpClientModule`
+* **deps:** peer dependencies have been updated to require at least Angular 13.0.0
+
+* **deps:** upgrade to Angular 13 ([659ea6e](https://github.com/dscheerens/ngx-forkable-http-client/commit/659ea6ea9ac3d186463e4899fba672c1e56a195c))
+* remove deprecated `ForkableHttpClientModule` ([f96a1b2](https://github.com/dscheerens/ngx-forkable-http-client/commit/f96a1b26018b2d1bc77909f6f75fb2b11715bdec))
+
 ## [3.0.0](https://github.com/dscheerens/ngx-forkable-http-client/compare/v2.1.1...v3.0.0) (2021-09-10)
 
 
